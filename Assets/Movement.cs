@@ -56,9 +56,9 @@ public class Movement : MonoBehaviour
 
     float rollStartTime;
 
-    bool isJumping;
-    bool isCrouching;
-    bool isRolling;
+    public static bool isJumping;
+    public static bool isCrouching;
+    public static bool isRolling;
 
     Animator animator;
     Rigidbody rb;
@@ -75,6 +75,11 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
+        if (Combat.isBlocking || Combat.isAttacking)
+        {
+            rb.velocity = Vector3.zero;
+            return;
+        }
         RecieveInput();
         Move();
         Jump();
@@ -180,7 +185,7 @@ public class Movement : MonoBehaviour
 
     void Roll()
     {
-        if (isJumping || isCrouching) return;
+        if (isJumping || isCrouching || movement == Vector3.zero) return;
 
         if(roll && !isRolling)
         {
