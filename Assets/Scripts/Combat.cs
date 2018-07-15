@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Combat : MonoBehaviour
 {
-    public Collider damageCollider;
+    public Ability ability;
 
     public static bool isBlocking;
     public static bool isAttacking;
@@ -40,13 +40,18 @@ public class Combat : MonoBehaviour
             isAttacking = true;
             int randomAttack = Random.Range(1, 4);
             animator.SetInteger("Attack", randomAttack);
-            damageCollider.enabled = true;
+         
+            if(!ability.OnCooldown())
+            {
+                ability.ActivateAbility();
+                ability.TriggerCooldown();
+            }
         }
     }
 
     public void ResetAttack()
     {
-        damageCollider.enabled = false;
+        ability.DeActivateAbility();
         animator.SetInteger("Attack", 0);
         isAttacking = false;
     }

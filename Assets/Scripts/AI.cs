@@ -5,16 +5,13 @@ using UnityEngine.AI;
 
 public class AI : MonoBehaviour
 {
-    public float attackFrequency;
-    public Collider damageCollider;
+    public Ability ability;
 
     NavMeshAgent agent;
     Transform player;
     Animator animator;
     Health health;
     Collider collision;
-
-    bool attacking;
 
     private void Start()
     {
@@ -46,25 +43,18 @@ public class AI : MonoBehaviour
         agent.updateRotation = true;
         animator.SetBool("Moving", false);
 
-        if(!attacking)
+        if (!ability.OnCooldown())
         {
-            attacking = true;
             animator.SetBool("Attack", true);
-            damageCollider.enabled = true;
-            StartCoroutine(AttackFrequency());
+            ability.ActivateAbility();
+            ability.TriggerCooldown();
         }
     }
 
     public void ResetAttack()
     {
         animator.SetBool("Attack", false);
-        damageCollider.enabled = false;
-    }
-
-    IEnumerator AttackFrequency()
-    {
-        yield return new WaitForSeconds(attackFrequency);
-        attacking = false;
+        ability.DeActivateAbility();
     }
 
     void Follow()

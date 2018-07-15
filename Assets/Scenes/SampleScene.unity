@@ -2544,6 +2544,7 @@ GameObject:
   - component: {fileID: 1056503062}
   - component: {fileID: 1056503061}
   - component: {fileID: 1056503063}
+  - component: {fileID: 1056503064}
   m_Layer: 0
   m_Name: Waren
   m_TagString: Enemy
@@ -2598,8 +2599,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22a9aec4e6818c64abcc2e3c99238172, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackFrequency: 1.5
-  damageCollider: {fileID: 2056359025}
+  ability: {fileID: 1056503064}
 --- !u!54 &1056503061
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2641,6 +2641,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 20
   isDead: 0
+--- !u!114 &1056503064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1056503057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdac7b866fe46a04793c5f83d708017a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityName: Stab
+  abilityCooldown: 1.5
+  damage: 5
+  damageCollider: {fileID: 2056359025}
 --- !u!1 &1078641967
 GameObject:
   m_ObjectHideFlags: 0
@@ -4523,6 +4538,7 @@ GameObject:
   - component: {fileID: 1658559007}
   - component: {fileID: 1658559008}
   - component: {fileID: 1658559009}
+  - component: {fileID: 1658559010}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -4614,7 +4630,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cad98b5278306e346b0bc37dd16b7ac4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageCollider: {fileID: 596323414}
+  ability: {fileID: 1658559010}
 --- !u!114 &1658559009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4629,6 +4645,21 @@ MonoBehaviour:
   maxHealth: 100
   isDead: 0
   healthBar: {fileID: 1850997581}
+--- !u!114 &1658559010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1658559003}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cdac7b866fe46a04793c5f83d708017a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  abilityName: Slash
+  abilityCooldown: 0
+  damage: 5
+  damageCollider: {fileID: 596323414}
 --- !u!1 &1678275866
 GameObject:
   m_ObjectHideFlags: 0
