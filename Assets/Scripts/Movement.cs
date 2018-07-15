@@ -197,7 +197,7 @@ public class Movement : MonoBehaviour
 
         if(isRolling)
         {
-            rb.velocity = new Vector3(movement.x * rollForce, rb.velocity.y, movement.z * rollForce);
+            rb.velocity = transform.forward * rollForce * Time.deltaTime;
             transform.rotation = Quaternion.RotateTowards(transform.rotation, rollDirection, rotationSpeed * Time.deltaTime);
 
             if (Time.time - rollStartTime >= rollLength)
