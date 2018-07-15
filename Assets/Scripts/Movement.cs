@@ -135,7 +135,7 @@ public class Movement : MonoBehaviour
     void Jump()
     {
         if (isCrouching || isRolling) return;
-        if (!isJumping && rb.velocity.y > 5 || !isJumping && rb.velocity.y < -5)
+        if (!isJumping && rb.velocity.y > 6 || !isJumping && rb.velocity.y < -6)
         {
             isJumping = true;
             animator.SetBool("Jumping", true);
@@ -198,7 +198,7 @@ public class Movement : MonoBehaviour
         if(isRolling)
         {
             rb.velocity = transform.forward * rollForce * Time.deltaTime;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rollDirection, rotationSpeed * Time.deltaTime);
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation, rollDirection, rotationSpeed * Time.deltaTime);
 
             if (Time.time - rollStartTime >= rollLength)
             {
