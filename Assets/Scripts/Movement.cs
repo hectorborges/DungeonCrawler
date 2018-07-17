@@ -89,8 +89,8 @@ public class Movement : MonoBehaviour
 
     void RecieveInput()
     {
-        moveX = Input.GetAxisRaw("Horizontal");
-        moveY = Input.GetAxisRaw("Vertical");
+        moveX = Input.GetAxis("Horizontal");
+        moveY = Input.GetAxis("Vertical");
         sprint = Input.GetKey(KeyCode.LeftShift);
         jump = Input.GetKeyDown(KeyCode.Space);
         crouch = Input.GetKeyDown(KeyCode.LeftControl);
@@ -99,16 +99,17 @@ public class Movement : MonoBehaviour
 
     void Move()
     {
-        movement = new Vector3(moveX, 0, moveY);
+        if(!isRolling)
+            movement = new Vector3(moveX, 0, moveY);
         movement = Vector3.ClampMagnitude(movement, 1);
+        movement *= speed * Time.deltaTime;
 
         if(!isJumping)
             movement = Camera.main.transform.TransformDirection(movement);
         else
             movement = transform.TransformDirection(movement);
-        movement *= speed * Time.deltaTime;
 
-        if (!isJumping || !isRolling)
+        if(!isJumping || !isRolling)
             rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
 
         if (isCrouching)
@@ -125,8 +126,8 @@ public class Movement : MonoBehaviour
 
         animator.SetFloat("Speed", speed);
         animator.SetFloat("AirVelocity", rb.velocity.y);
-        print(movement);
-        if (movement == Vector3.zero || isJumping) return; // || isRolling
+
+        if (movement == Vector3.zero || isJumping || isRolling) return;
         direction = Quaternion.LookRotation(new Vector3(movement.x, 0, movement.z));
         transform.rotation = Quaternion.RotateTowards(transform.rotation, direction, rotationSpeed * Time.deltaTime);
     }
@@ -197,7 +198,7 @@ public class Movement : MonoBehaviour
         if(isRolling)
         {
             rb.velocity = transform.forward * rollForce * Time.deltaTime;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, rollDirection, rotationSpeed * Time.deltaTime);
+            //transform.rotation = Quaternion.RotateTowards(transform.rotation, rollDirection, rotationSpeed * Time.deltaTime);
 
             if (Time.time - rollStartTime >= rollLength)
             {
