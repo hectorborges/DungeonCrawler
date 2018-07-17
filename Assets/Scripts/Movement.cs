@@ -109,7 +109,7 @@ public class Movement : MonoBehaviour
         else
             movement = transform.TransformDirection(movement);
 
-        if(!isJumping || !isRolling)
+        if(!isRolling)
             rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
 
         if (isCrouching)
