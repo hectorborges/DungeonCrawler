@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class AI : MonoBehaviour
 {
     public Ability ability;
+    public float rotationSpeed;
 
     NavMeshAgent agent;
     Transform player;
@@ -40,7 +41,6 @@ public class AI : MonoBehaviour
 
     void Attack()
     {
-        agent.updateRotation = true;
         animator.SetBool("Moving", false);
 
         if (!ability.OnCooldown())
@@ -49,6 +49,14 @@ public class AI : MonoBehaviour
             ability.ActivateAbility();
             ability.TriggerCooldown();
         }
+        RotateTowards();
+    }
+
+    private void RotateTowards()
+    {
+        Vector3 direction = (player.position - transform.position).normalized;
+        Quaternion lookRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z));    // flattens the vector3
+        transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
 
     public void ResetAttack()

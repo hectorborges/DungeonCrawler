@@ -78,6 +78,8 @@ public class Movement : MonoBehaviour
         if (Combat.isBlocking || Combat.isAttacking)
         {
             rb.velocity = Vector3.zero;
+            direction = Quaternion.Euler(TargetManager.instance.closestTarget.position);
+            transform.LookAt(new Vector3(direction.x, transform.position.y, direction.z));
             return;
         }
         RecieveInput();
@@ -128,7 +130,11 @@ public class Movement : MonoBehaviour
         animator.SetFloat("AirVelocity", rb.velocity.y);
 
         if (movement == Vector3.zero || isJumping || isRolling) return;
-        direction = Quaternion.LookRotation(new Vector3(movement.x, 0, movement.z));
+
+        if (!Combat.isAttacking)
+            direction = Quaternion.LookRotation(new Vector3(movement.x, 0, movement.z));
+        else
+            direction = Quaternion.Euler(TargetManager.instance.closestTarget.position);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, direction, rotationSpeed * Time.deltaTime);
     }
 
