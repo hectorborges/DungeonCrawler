@@ -7,6 +7,8 @@ public class Ability : MonoBehaviour
     public string abilityName;
     public float abilityCooldown;
 
+    protected bool isActive;
+
     bool onCooldown;
 
     public virtual void ActivateAbility() { }
@@ -24,6 +26,11 @@ public class Ability : MonoBehaviour
     public bool OnCooldown()
     {
         return onCooldown;
+    }
+
+    public bool IsActive()
+    {
+        return isActive;
     }
 
     IEnumerator Cooldown()

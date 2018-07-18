@@ -9,11 +9,13 @@ public class MeleeAbility : Ability
 
     public override void ActivateAbility()
     {
+        isActive = true;
         damageCollider.enabled = true;
     }
 
     public override void DeActivateAbility()
     {
         damageCollider.enabled = false;
+        isActive = false;
     }
 }

@@ -78,8 +78,9 @@ public class Movement : MonoBehaviour
         if (Combat.isBlocking || Combat.isAttacking)
         {
             rb.velocity = Vector3.zero;
-            direction = Quaternion.Euler(TargetManager.instance.closestTarget.position);
-            transform.LookAt(new Vector3(direction.x, transform.position.y, direction.z));
+            //if (!TargetManager.instance.closestTarget) { return; }
+            //direction = Quaternion.Euler(TargetManager.instance.closestTarget.position);
+            //transform.LookAt(new Vector3(direction.x, transform.position.y, direction.z));
             return;
         }
         RecieveInput();

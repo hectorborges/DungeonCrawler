@@ -49,7 +49,8 @@ public class AI : MonoBehaviour
             ability.ActivateAbility();
             ability.TriggerCooldown();
         }
-        RotateTowards();
+        if(!ability.IsActive())
+            RotateTowards();
     }
 
     private void RotateTowards()

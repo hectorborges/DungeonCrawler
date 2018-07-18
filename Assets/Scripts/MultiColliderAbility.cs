@@ -17,6 +17,7 @@ public class MultiColliderAbility : Ability
 
     IEnumerator ActivationFrequency()
     {
+        isActive = true;
         abilityEffect.SetActive(true);
         for (int i = 0; i < damageColliders.Length; i++)
         {
@@ -26,5 +27,6 @@ public class MultiColliderAbility : Ability
         }
         yield return new WaitForSeconds(extraEffectWaitTime);
         abilityEffect.SetActive(false);
+        isActive = false;
     }
 }
