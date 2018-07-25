@@ -75,12 +75,9 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        if (Combat.isBlocking || Combat.isAttacking)
+        if (Combat.isImmune)
         {
             rb.velocity = Vector3.zero;
-            //if (!TargetManager.instance.closestTarget) { return; }
-            //direction = Quaternion.Euler(TargetManager.instance.closestTarget.position);
-            //transform.LookAt(new Vector3(direction.x, transform.position.y, direction.z));
             return;
         }
         RecieveInput();
@@ -103,14 +100,14 @@ public class Movement : MonoBehaviour
     void Move()
     {
         if(!isRolling)
+        {
             movement = new Vector3(moveX, 0, moveY);
-        movement = Vector3.ClampMagnitude(movement, 1);
-        movement *= speed * Time.deltaTime;
+            movement = Vector3.ClampMagnitude(movement, 1);
+            movement *= speed * Time.deltaTime;
+        }
 
-        if(!isJumping)
+       // if(!isJumping)
             movement = Camera.main.transform.TransformDirection(movement);
-        else
-            movement = transform.TransformDirection(movement);
 
         if(!isRolling)
             rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
@@ -132,10 +129,10 @@ public class Movement : MonoBehaviour
 
         if (movement == Vector3.zero || isJumping || isRolling) return;
 
-        if (!Combat.isAttacking)
+        //if (!Combat.isAttacking)
             direction = Quaternion.LookRotation(new Vector3(movement.x, 0, movement.z));
-        else
-            direction = Quaternion.Euler(TargetManager.instance.closestTarget.position);
+        //else
+        //    direction = Quaternion.Euler(TargetManager.instance.closestTarget.position);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, direction, rotationSpeed * Time.deltaTime);
     }
 

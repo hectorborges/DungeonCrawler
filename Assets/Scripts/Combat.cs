@@ -4,61 +4,99 @@ using UnityEngine;
 
 public class Combat : MonoBehaviour
 {
-    public Ability ability;
+    public Ability primaryAbility;
+    public Ability secondaryAbility;
+    public GameObject shieldEffect;
 
-    public static bool isBlocking;
+    public static bool isImmune;
     public static bool isAttacking;
 
-    bool block;
-    bool attack;
+    bool secondaryAttack;
+    bool primaryAttack;
 
     Animator animator;
 
     private void Start()
     {
         animator = GetComponentInChildren<Animator>();
+        primaryAbility.CacheAnimator(animator);
+        secondaryAbility.CacheAnimator(animator);
     }
 
     private void Update()
     {
         if (Movement.isCrouching || Movement.isJumping || Movement.isRolling) return;
         RecieveInput();
-        Attack();
-        Block();
+        PrimaryAttack();
+        SecondaryAttack();
     }
 
     void RecieveInput()
     {
-        attack = Input.GetKeyDown(KeyCode.Mouse0);
-        block = Input.GetKey(KeyCode.Mouse1);
+        switch (primaryAbility.inputType)
+        {
+            case Ability.InputType.OnPress:
+                primaryAttack = Input.GetKeyDown(KeyCode.Mouse0);
+                break;
+            case Ability.InputType.OnHold:
+                primaryAttack = Input.GetKey(KeyCode.Mouse0);
+                break;
+        }
+
+        switch (secondaryAbility.inputType)
+        {
+            case Ability.InputType.OnPress:
+                secondaryAttack = Input.GetKeyDown(KeyCode.Mouse1);
+                break;
+            case Ability.InputType.OnHold:
+                secondaryAttack = Input.GetKey(KeyCode.Mouse1);
+                break;
+        }
+
+        if (primaryAbility.deActivationType == Ability.DeActivationType.Manual && Input.GetKeyUp(KeyCode.Mouse0))
+            primaryAbility.DeActivateAbility();
+
+        if (secondaryAbility.deActivationType == Ability.DeActivationType.Manual && Input.GetKeyUp(KeyCode.Mouse1))
+            secondaryAbility.DeActivateAbility();
     }
 
-    void Attack()
+    void PrimaryAttack()
     {
-        if(!isAttacking && attack)
+        if(!isAttacking && primaryAttack)
         {
-            isAttacking = true;
-            int randomAttack = Random.Range(1, 4);
-            animator.SetInteger("Attack", randomAttack);
-         
-            if(!ability.OnCooldown())
+            if(!primaryAbility.OnCooldown())
             {
-                ability.ActivateAbility();
-                ability.TriggerCooldown();
+                primaryAbility.ActivateAbility();
+                primaryAbility.TriggerCooldown();
             }
         }
     }
 
     public void ResetAttack()
     {
-        ability.DeActivateAbility();
-        animator.SetInteger("Attack", 0);
         isAttacking = false;
     }
 
-    void Block()
+    public void ResetPrimaryAttack()
     {
-       isBlocking = block;
-       animator.SetBool("Blocking", block);
+        primaryAbility.DeActivateAbility();
+    }
+
+    void SecondaryAttack()
+    {
+        if (!isAttacking && secondaryAttack)
+        {
+            if (!secondaryAbility.OnCooldown())
+            {
+                secondaryAbility.ActivateAbility();
+                secondaryAbility.TriggerCooldown();
+            }
+        }
+    }
+
+    public void ResetSecondaryAttack()
+    {
+        primaryAbility.DeActivateAbility();
+        isAttacking = false;
     }
 }

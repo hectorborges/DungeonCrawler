@@ -9,7 +9,7 @@ public class PlayerHealth : Health
 
     public override void TookDamage(int damage)
     {
-        if (Combat.isBlocking) return;
+        if (Combat.isImmune) return;
         health -= damage;
         animator.SetTrigger("Hit");
 
